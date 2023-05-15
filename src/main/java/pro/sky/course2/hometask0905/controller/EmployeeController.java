@@ -7,7 +7,9 @@ import org.springframework.web.bind.annotation.RestController;
 import pro.sky.course2.hometask0905.model.Employee;
 import pro.sky.course2.hometask0905.service.EmployeeService;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/employee")
@@ -34,7 +36,7 @@ public class EmployeeController {
     }
 
     @GetMapping("/list")
-    public List<Employee> showArray() {
+    public Collection<Employee> showArray() {
         return employeeService.showArray();
     }
 }

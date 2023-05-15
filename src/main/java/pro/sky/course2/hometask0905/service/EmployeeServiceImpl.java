@@ -6,27 +6,25 @@ import pro.sky.course2.hometask0905.exceptions.EmployeeNotFoundException;
 import pro.sky.course2.hometask0905.exceptions.EmployeeStorageIsFullException;
 import pro.sky.course2.hometask0905.model.Employee;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Collections;
+import java.util.*;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
-    private final List<Employee> employeeList = new ArrayList<>();
+    private final Map<String, Employee> employeeMap = new HashMap<>();
     private static final int maxSize = 20;
 
     @Override
     public Employee addEmployee(String firstName, String lastName) {
 
-        if (employeeList.size() == maxSize) {
+        if (employeeMap.size() == maxSize) {
             throw new EmployeeStorageIsFullException();
         }
         Employee newcomer = new Employee(firstName, lastName);
 
-        if (employeeList.contains(newcomer)) {
+        if (employeeMap.containsKey(newcomer.getFullName())) {
             throw new EmployeeAlreadyAddedException();
         }
-        employeeList.add(newcomer);
+        employeeMap.put(newcomer.getFullName(), newcomer);
         return newcomer;
     }
 
@@ -34,24 +32,24 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Employee removeEmployee(String firstName, String lastName) {
         Employee target = new Employee(firstName, lastName);
 
-        if (!employeeList.remove(target)) {
+        if (!employeeMap.containsKey(target.getFullName())) {
             throw new EmployeeNotFoundException();
         }
-        return target;
+        return employeeMap.remove(target.getFullName());
     }
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
         Employee target = new Employee(firstName, lastName);
 
-        if (employeeList.contains(target)) {
-            return target;
+        if (employeeMap.containsKey(target.getFullName())) {
+            return employeeMap.get(target.getFullName());
         }
         throw new EmployeeNotFoundException();
     }
 
     @Override
-    public List<Employee> showArray() {
-        return Collections.unmodifiableList(employeeList);
+    public Collection<Employee> showArray() {
+        return Collections.unmodifiableCollection(employeeMap.values());
     }
 }
