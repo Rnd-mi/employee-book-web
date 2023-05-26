@@ -1,15 +1,13 @@
 package pro.sky.course2.hometask0905.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pro.sky.course2.hometask0905.model.Employee;
 import pro.sky.course2.hometask0905.services.DepartmentService;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
 @RestController
 @RequestMapping("/dep")
@@ -31,8 +29,8 @@ public class DepartmentController {
         return depService.getMaxSalaryInDep(dep);
     }
 
-    @GetMapping()
-    public List<Employee> printEmployeesFromDep(@RequestParam int dep) {
+    @GetMapping("/{dep}")
+    public List<Employee> printEmployeesFromDep(@PathVariable("dep") int dep) {
         return depService.printEmployeesFromDep(dep);
     }
 
@@ -46,8 +44,9 @@ public class DepartmentController {
         return "Average salary in " + dep + " department : " + depService.getAverageSalaryInDep(dep);
     }
 
-    @GetMapping("/index")
-    public String indexSalariesInDep(@RequestParam int dep, int percent) {
+    @GetMapping("/index/{dep}/{percent}")
+    public Stream<Employee> indexSalariesInDep(@PathVariable("dep") int dep,
+                                               @PathVariable("percent") int percent) {
         return depService.indexSalariesInDep(dep, percent);
     }
 

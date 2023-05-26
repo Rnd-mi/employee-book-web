@@ -20,5 +20,5 @@ public interface DepartmentService {
 
     long getAverageSalaryInDep(int department);
 
-    String indexSalariesInDep(int department, int percent);
+    Stream<Employee> indexSalariesInDep(int department, int percent);
 }

@@ -61,22 +61,16 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public long getAverageSalaryInDep(int department) {
-
         long count = getFilteredStream(department).count();
-
-        long averageSalary = getSalaryExpensesForDep(department) / count;
-        System.out.println("Average salary among employees from the " + department + " department: " + averageSalary + "\n");
-        return averageSalary;
+        return getSalaryExpensesForDep(department) / count;
     }
 
     @Override
-    public String indexSalariesInDep(int department, int percent) {
+    public Stream<Employee> indexSalariesInDep(int department, int percent) {
         double index = (double) percent / 100;
-
         getFilteredStream(department)
                 .forEach(e -> e.setSalary((int) Math.round(e.getSalary() + (e.getSalary() * index))));
 
-        return "You have indexed employees' salaries in " + department + " department. \n"
-                + "Index = " + index;
+        return getFilteredStream(department);
     }
 }
