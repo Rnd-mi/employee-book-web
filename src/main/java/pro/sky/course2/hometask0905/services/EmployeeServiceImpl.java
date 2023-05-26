@@ -1,4 +1,4 @@
-package pro.sky.course2.hometask0905.service;
+package pro.sky.course2.hometask0905.services;
 
 import org.springframework.stereotype.Service;
 import pro.sky.course2.hometask0905.exceptions.EmployeeAlreadyAddedException;
@@ -7,19 +7,24 @@ import pro.sky.course2.hometask0905.exceptions.EmployeeStorageIsFullException;
 import pro.sky.course2.hometask0905.model.Employee;
 
 import java.util.*;
+import java.util.stream.Stream;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
     private final Map<String, Employee> employeeMap = new HashMap<>();
     private static final int maxSize = 20;
 
+    public Map<String, Employee> getEmployeeMap() {
+        return employeeMap;
+    }
+
     @Override
-    public Employee addEmployee(String firstName, String lastName) {
+    public Employee addEmployee(String firstName, String lastName, int department, int salary) {
 
         if (employeeMap.size() == maxSize) {
             throw new EmployeeStorageIsFullException();
         }
-        Employee newcomer = new Employee(firstName, lastName);
+        Employee newcomer = new Employee(firstName, lastName, department, salary);
 
         if (employeeMap.containsKey(newcomer.getFullName())) {
             throw new EmployeeAlreadyAddedException();
@@ -30,20 +35,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
-        Employee target = new Employee(firstName, lastName);
+        String fullName = firstName + " " + lastName;
 
-        if (!employeeMap.containsKey(target.getFullName())) {
+        if (!employeeMap.containsKey(fullName)) {
             throw new EmployeeNotFoundException();
         }
-        return employeeMap.remove(target.getFullName());
+        return employeeMap.remove(fullName);
     }
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        Employee target = new Employee(firstName, lastName);
+        String fullName = firstName + " " + lastName;
 
-        if (employeeMap.containsKey(target.getFullName())) {
-            return employeeMap.get(target.getFullName());
+        if (employeeMap.containsKey(fullName)) {
+            return employeeMap.get(fullName);
         }
         throw new EmployeeNotFoundException();
     }
@@ -53,3 +58,4 @@ public class EmployeeServiceImpl implements EmployeeService {
         return Collections.unmodifiableCollection(employeeMap.values());
     }
 }
+
