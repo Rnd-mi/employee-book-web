@@ -22,7 +22,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Employee getMinSalaryInDep(int department) {
-        Optional<Employee> employee = employeeMap.values().stream()
+        Optional<Employee> employee = getFilteredStream(department)
                 .min(Comparator.comparingInt(e -> e.getSalary()));
 
         return employee.orElseThrow();
@@ -30,7 +30,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Employee getMaxSalaryInDep(int department) {
-        Optional<Employee> employee = employeeMap.values().stream()
+        Optional<Employee> employee = getFilteredStream(department)
                 .max(Comparator.comparingInt(e -> e.getSalary()));
 
         return employee.orElseThrow();
@@ -44,7 +44,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public Map<Integer, List<Employee>> printDepartments() {
-        Map<Integer, List<Employee>> result = new HashMap<>();
+        Map<Integer, List<Employee>> result;
 
         result = employeeMap.values().stream()
                 .collect(Collectors.groupingBy(e -> e.getDepartment()));
