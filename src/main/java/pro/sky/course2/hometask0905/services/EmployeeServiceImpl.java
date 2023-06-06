@@ -9,7 +9,6 @@ import pro.sky.course2.hometask0905.exceptions.NotValidInputException;
 import pro.sky.course2.hometask0905.model.Employee;
 
 import java.util.*;
-import java.util.stream.Stream;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -38,9 +37,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeMap.size() == maxSize) {
             throw new EmployeeStorageIsFullException();
         }
-        firstName = nameHandler(firstName);
-        lastName = nameHandler(lastName);
-        Employee newcomer = new Employee(firstName, lastName, department, salary);
+        Employee newcomer = new Employee(nameHandler(firstName), nameHandler(lastName),
+                                         department, salary);
 
         if (employeeMap.containsKey(newcomer.getFullName())) {
             throw new EmployeeAlreadyAddedException();
@@ -51,9 +49,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
-        firstName = nameHandler(firstName);
-        lastName = nameHandler(lastName);
-        String fullName = firstName + " " + lastName;
+        String fullName = nameHandler(firstName) + " " + nameHandler(lastName);
 
         if (!employeeMap.containsKey(fullName)) {
             throw new EmployeeNotFoundException();
@@ -63,9 +59,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        firstName = nameHandler(firstName);
-        lastName = nameHandler(lastName);
-        String fullName = firstName + " " + lastName;
+        String fullName = nameHandler(firstName) + " " + nameHandler(lastName);
 
         if (employeeMap.containsKey(fullName)) {
             return employeeMap.get(fullName);
