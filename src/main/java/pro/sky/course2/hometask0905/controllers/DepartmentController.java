@@ -19,13 +19,13 @@ public class DepartmentController {
         this.depService = depService;
     }
 
-    @GetMapping("/min")
-    public Employee findMinSalary(@RequestParam int dep) {
+    @GetMapping("/min/{dep}")
+    public Employee findMinSalary(@PathVariable("dep") int dep) {
         return depService.getMinSalaryInDep(dep);
     }
 
-    @GetMapping("/max")
-    public Employee findMaxSalary(@RequestParam int dep) {
+    @GetMapping("/max/{dep}")
+    public Employee findMaxSalary(@PathVariable("dep") int dep) {
         return depService.getMaxSalaryInDep(dep);
     }
 
@@ -34,13 +34,13 @@ public class DepartmentController {
         return depService.printEmployeesFromDep(dep);
     }
 
-    @GetMapping("/expenses")
-    public String getSalaryExpensesForDep(@RequestParam int dep) {
+    @GetMapping("/expenses/{dep}")
+    public String getSalaryExpensesForDep(@PathVariable("dep") int dep) {
         return "Salary expenses for " + dep + " department : " + depService.getSalaryExpensesForDep(dep);
     }
 
-    @GetMapping("/average-salary")
-    public String getAverageSalaryInDep(@RequestParam int dep) {
+    @GetMapping("/average-salary/{dep}")
+    public String getAverageSalaryInDep(@PathVariable("dep") int dep) {
         return "Average salary in " + dep + " department : " + depService.getAverageSalaryInDep(dep);
     }
 
