@@ -49,20 +49,20 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     @Override
     public Employee removeEmployee(String firstName, String lastName) {
-        String fullName = nameHandler(firstName) + " " + nameHandler(lastName);
+        String key = nameHandler(firstName) + " " + nameHandler(lastName);
 
-        if (!employeeMap.containsKey(fullName)) {
+        if (!employeeMap.containsKey(key)) {
             throw new EmployeeNotFoundException();
         }
-        return employeeMap.remove(fullName);
+        return employeeMap.remove(key);
     }
 
     @Override
     public Employee findEmployee(String firstName, String lastName) {
-        String fullName = nameHandler(firstName) + " " + nameHandler(lastName);
+        String key = getKey(firstName, lastName);
 
-        if (employeeMap.containsKey(fullName)) {
-            return employeeMap.get(fullName);
+        if (employeeMap.containsKey(key)) {
+            return employeeMap.get(key);
         }
         throw new EmployeeNotFoundException();
     }
@@ -70,6 +70,10 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public Collection<Employee> showArray() {
         return Collections.unmodifiableCollection(employeeMap.values());
+    }
+
+    private String getKey(String firstName, String lastName) {
+        return nameHandler(firstName) + " " + nameHandler(lastName);
     }
 
     private String nameHandler(String string) {
