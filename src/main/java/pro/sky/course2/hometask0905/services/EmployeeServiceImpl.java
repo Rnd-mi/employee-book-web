@@ -4,16 +4,15 @@ import org.springframework.stereotype.Service;
 import pro.sky.course2.hometask0905.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.course2.hometask0905.exceptions.EmployeeNotFoundException;
 import pro.sky.course2.hometask0905.exceptions.EmployeeStorageIsFullException;
-import pro.sky.course2.hometask0905.exceptions.NotValidInputException;
 import pro.sky.course2.hometask0905.model.Employee;
+
+import static pro.sky.course2.hometask0905.utility.StringHandler.nameHandler;
 
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import static org.apache.commons.lang3.StringUtils.capitalize;
-import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -30,8 +29,11 @@ public class EmployeeServiceImpl implements EmployeeService {
         employeeMap.put("Ignat Ivanov", new Employee("Ignat", "Ivanov", 5, 75_100));
         employeeMap.put("James Milner", new Employee("James", "Milner", 1, 150_800));
         employeeMap.put("Yuki Tsunoda", new Employee("Yuki", "Tsunoda", 2, 41_500));
+
+        System.out.println(findEmployee("Anna", "Svetova").hashCode());
     }
 
+    @Override
     public Map<String, Employee> getEmployeeMap() {
         return employeeMap;
     }
@@ -43,7 +45,7 @@ public class EmployeeServiceImpl implements EmployeeService {
             throw new EmployeeStorageIsFullException();
         }
         Employee newcomer = new Employee(nameHandler(firstName), nameHandler(lastName),
-                                         department, salary);
+                department, salary);
 
         if (employeeMap.containsKey(newcomer.getFullName())) {
             throw new EmployeeAlreadyAddedException();
@@ -79,14 +81,6 @@ public class EmployeeServiceImpl implements EmployeeService {
 
     private String getKey(String firstName, String lastName) {
         return nameHandler(firstName) + " " + nameHandler(lastName);
-    }
-
-    private String nameHandler(String string) {
-        if (!isAlpha(string)) {
-            throw new NotValidInputException();
-        }
-
-        return capitalize(string);
     }
 }
 
