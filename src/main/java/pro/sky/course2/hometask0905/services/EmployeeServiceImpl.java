@@ -1,6 +1,5 @@
 package pro.sky.course2.hometask0905.services;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import pro.sky.course2.hometask0905.exceptions.EmployeeAlreadyAddedException;
 import pro.sky.course2.hometask0905.exceptions.EmployeeNotFoundException;
@@ -8,7 +7,13 @@ import pro.sky.course2.hometask0905.exceptions.EmployeeStorageIsFullException;
 import pro.sky.course2.hometask0905.exceptions.NotValidInputException;
 import pro.sky.course2.hometask0905.model.Employee;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
+import static org.apache.commons.lang3.StringUtils.capitalize;
+import static org.apache.commons.lang3.StringUtils.isAlpha;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -77,15 +82,11 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     private String nameHandler(String string) {
-        if (StringUtils.isEmpty(string)) {
+        if (!isAlpha(string)) {
             throw new NotValidInputException();
         }
 
-        if (!StringUtils.isAlpha(string)) {
-            throw new NotValidInputException();
-        }
-
-        return StringUtils.capitalize(string);
+        return capitalize(string);
     }
 }
 
