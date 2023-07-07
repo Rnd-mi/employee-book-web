@@ -8,11 +8,11 @@
         <version>2.7.11</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>ru.stepanov.test</groupId>
-    <artifactId>hometask0905</artifactId>
+    <groupId>pro.sky.course2</groupId>
+    <artifactId>employee-book-web</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>hometask0905</name>
-    <description>hometask0905</description>
+    <name>employee-book-web</name>
+    <description>employee-book-web</description>
     <properties>
         <java.version>11</java.version>
     </properties>

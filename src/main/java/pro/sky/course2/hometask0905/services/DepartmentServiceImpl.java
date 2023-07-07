@@ -1,22 +1,28 @@
 package pro.sky.course2.hometask0905.services;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import pro.sky.course2.hometask0905.exceptions.EmployeeNotFoundException;
 import pro.sky.course2.hometask0905.model.Employee;
 
-import java.util.*;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
-    private final Map<String, Employee> employeeMap;
+    private final EmployeeService employeeService;
 
-    public DepartmentServiceImpl(EmployeeServiceImpl employeeServiceImpl) {
-        employeeMap = employeeServiceImpl.getEmployeeMap();
+    @Autowired
+    public DepartmentServiceImpl(EmployeeService employeeService) {
+        this.employeeService = employeeService;
     }
 
     private Stream<Employee> getFilteredStream(int department) {
-        return employeeMap.values().stream()
+        return employeeService.getEmployeeMap().values().stream()
                 .filter(e -> e.getDepartment() == department);
     }
 
@@ -25,7 +31,8 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<Employee> employee = getFilteredStream(department)
                 .min(Comparator.comparingInt(e -> e.getSalary()));
 
-        return employee.orElseThrow();
+
+        return employee.orElseThrow(() -> new EmployeeNotFoundException());
     }
 
     @Override
@@ -33,7 +40,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         Optional<Employee> employee = getFilteredStream(department)
                 .max(Comparator.comparingInt(e -> e.getSalary()));
 
-        return employee.orElseThrow();
+        return employee.orElseThrow(() -> new EmployeeNotFoundException());
     }
 
     @Override
@@ -46,7 +53,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public Map<Integer, List<Employee>> printDepartments() {
         Map<Integer, List<Employee>> result;
 
-        result = employeeMap.values().stream()
+        result = employeeService.getEmployeeMap().values().stream()
                 .collect(Collectors.groupingBy(e -> e.getDepartment()));
 
         return result;
