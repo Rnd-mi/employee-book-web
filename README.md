@@ -1,8 +1,9 @@
 # employee-book-web
-One of the first CRUD app that I've created
+Educational app
+Storage is implemented using HashMap
 
 Stack:
 - Java 11
-- Spring boot 2.7.11
+- Spring boot
 - Junit
-- Apache commons-lang3 3.12.0
+- Apache commons-lang3
